@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+
+    <form action="/search" method="get">
+        <input type="text" name="item" placeholder="Search for items" value="<%= search %>">
+        <button type="submit">Search</button>
+    </form>
+
+    <h3>Searched result : "<%= search %>"</h3>
+
+</body>
+</html>

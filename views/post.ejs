@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Here, Blog Posts</h1>
+    <ul>
+        <% posts.forEach(post => { %>
+            <li><a href="/posts/<%= post.title %>"><%= post.title %></a>: <%= post.content %></li>
+        <% }) %>
+    </ul>
+    <h2>Add a New Post</h2>
+    <form action="/add-post" method="POST">
+        <input type="text" name="title" placeholder="Enter post title" required>
+        <textarea name="content" placeholder="Enter post content" required></textarea>
+        <button type="submit">Add Post</button>
+    </form>
+</body>
+</html
