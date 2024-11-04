@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const PORT = 8080;
+const PORT = 3000;
 const session = require("express-session");
+const cors = require("cors");
 
 // Middleware for session management
 app.use(session({ secret: 'your_secret_key', resave: false, saveUninitialized: true }));
@@ -177,6 +178,51 @@ function getGreeting() {
         return "Good Evening";
     }
 }
+app.get('/contact', (req, res) => {
+    res.render('contact');
+});
+app.post('/contact', (req, res) => {
+    const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+        return res.send('All fields are required!');
+    }
+    res.render('thankyou', { name, email, message });
+});
+
+const multer = require("multer");
+const product = [
+    { name: 'Sample Product', description: 'A sample description.', image: '/images/sample.jpg' }
+];
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/images'); // Save to 'public/images' folder
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname); // Unique filename
+    }
+});
+const upload = multer({ storage });
+
+// GET route for the upload form
+app.get('/upload', (req, res) => {
+    res.render('upload'); // Renders an upload form in EJS
+});
+
+app.post('/upload', upload.single('productImage'), (req, res) => {
+  
+    const newProduct = {
+        name: req.body.name,
+        description: req.body.description,
+        image: 'images/' + req.file.filename  + './jpg'
+    };
+    product.push(newProduct);
+    res.redirect('/catalog');
+});
+
+app.get('/catalog', (req, res) => {
+    res.render('catalog', { product });
+});
+
 
 // Start the server
 app.listen(PORT, (err) => {
